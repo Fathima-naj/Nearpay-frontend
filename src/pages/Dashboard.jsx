@@ -70,14 +70,9 @@ export default function Dashboard() {
         ) : (
           <div className="col-span-full text-center py-16">
             <p className="text-gray-500 text-lg mb-4">
-              No categories found or not authenticated
+              create new categories
             </p>
-            <button 
-              onClick={() => window.location.href = '/login'}
-              className="px-6 py-3 rounded-lg bg-[#6E8C63] text-white font-medium hover:bg-[#57724F] transition"
-            >
-              Go to Login
-            </button>
+            
           </div>
         )}
       </div>
