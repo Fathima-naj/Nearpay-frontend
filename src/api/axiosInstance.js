@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL, // backend URL
-  withCredentials: true,                   // send cookies
+  baseURL: import.meta.env.VITE_BASE_URL, 
+  withCredentials: true,                 
   headers: { "Content-Type": "application/json" },
 });
 

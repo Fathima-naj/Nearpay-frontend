@@ -7,13 +7,13 @@ export default function HeaderMonths({ selectedMonth, setSelectedMonth }) {
   ];
 
   return (
-    <div className="flex justify-between items-center mb-6">
-      <h2 className="text-2xl font-bold text-gray-800">
+    <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+      <h2 className="text-2xl font-bold text-[#5A4A42]">
         {months[selectedMonth.month]} {selectedMonth.year}
       </h2>
 
       <select
-        className="border px-3 py-2 rounded-lg"
+        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#6E8C63] transition"
         value={`${selectedMonth.month}-${selectedMonth.year}`}
         onChange={(e) => {
           const [month, year] = e.target.value.split("-");
