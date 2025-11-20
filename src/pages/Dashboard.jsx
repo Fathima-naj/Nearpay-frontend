@@ -19,7 +19,7 @@ export default function Dashboard() {
     const fetchCategories = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/dashboard?month=${selectedMonth.month}&year=${selectedMonth.year}`,
+          `https://nearpay-backend.onrender.com/api/dashboard?month=${selectedMonth.month}&year=${selectedMonth.year}`,
           { credentials: "include" }
         );
         const data = await res.json();
