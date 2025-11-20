@@ -4,6 +4,7 @@ import CategoryCard from "../component/CategoryCard";
 import ExpenseModal from "../component/ExpenseModal";
 import AddCategoryForm from "../component/category";
 import { Toaster } from "react-hot-toast";
+import axiosInstance from "../api/axiosInstance";
 
 export default function Dashboard() {
   const [selectedMonth, setSelectedMonth] = useState({
@@ -14,22 +15,27 @@ export default function Dashboard() {
   const [categories, setCategories] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [refresh, setRefresh] = useState(false);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch(
-          `https://nearpay-backend.onrender.com/api/dashboard?month=${selectedMonth.month}&year=${selectedMonth.year}`,
-          { credentials: "include" }
-        );
-        const data = await res.json();
-        setCategories(data.categories);
-      } catch (err) {
-        console.error("Dashboard fetch error:", err);
+useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const response = await axiosInstance.get('/api/dashboard', {
+        params: {
+          month: selectedMonth.month,
+          year: selectedMonth.year
+        }
+      });
+      
+      setCategories(response.data.categories || []);
+    } catch (err) {
+      console.error("Dashboard fetch error:", err);
+      if (err.response?.status === 401) {
+        window.location.href = '/login';
       }
-    };
-    fetchCategories();
-  }, [selectedMonth, refresh]);
+      setCategories([]); 
+    }
+  };
+  fetchCategories();
+}, [selectedMonth, refresh]);
 
   return (
     <div className="p-6">
