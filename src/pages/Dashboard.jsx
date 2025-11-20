@@ -4,7 +4,6 @@ import CategoryCard from "../component/CategoryCard";
 import ExpenseModal from "../component/ExpenseModal";
 import AddCategoryForm from "../component/category";
 import { Toaster } from "react-hot-toast";
-import axiosInstance from "../api/axiosInstance";
 
 export default function Dashboard() {
   const [selectedMonth, setSelectedMonth] = useState({
@@ -18,20 +17,32 @@ export default function Dashboard() {
 useEffect(() => {
   const fetchCategories = async () => {
     try {
-      const response = await axiosInstance.get('/api/dashboard', {
-        params: {
-          month: selectedMonth.month,
-          year: selectedMonth.year
+      const res = await fetch(
+        `https://nearpay-backend.onrender.com/api/dashboard?month=${selectedMonth.month}&year=${selectedMonth.year}`,
+        {
+          method: 'GET',
+          credentials: 'include', // This is correct
+          headers: {
+            'Content-Type': 'application/json',
+          },
         }
-      });
+      );
       
-      setCategories(response.data.categories || []);
+      // Check if response is ok
+      if (!res.ok) {
+        if (res.status === 401) {
+          // Redirect to login if unauthorized
+          window.location.href = '/login';
+          return;
+        }
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
+      const data = await res.json();
+      setCategories(data.categories || []); // Add fallback to empty array
     } catch (err) {
       console.error("Dashboard fetch error:", err);
-      if (err.response?.status === 401) {
-        window.location.href = '/login';
-      }
-      setCategories([]); 
+      setCategories([]); // Set empty array on error
     }
   };
   fetchCategories();
